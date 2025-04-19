@@ -1,0 +1,47 @@
+<%- include('../SinInicioSesion/header') %>
+
+<section id="contacto" class="container my-5">
+    <h2 class="mb-4 text-center">Contáctanos</h2>
+
+    <div class="row">
+        <!-- Formulario de contacto -->
+        <div class="col-md-6">
+            <form method="POST" action="/contacto"><!-- Asegúrate de tener esta ruta -->
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" id="nombre" name="nombre" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="mensaje" class="form-label">Mensaje</label>
+                    <textarea class="form-control" id="mensaje" name="mensaje" rows="4" required></textarea>
+                </div>
+
+                <% if (mensaje) { %>
+                    <div id="mensajeExito" class="alert alert-success"><%= mensaje %></div>
+                <% } %>
+
+
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </form>
+        </div>
+
+        <!-- Mapa -->
+        <div class="col-md-6 mt-4 mt-md-0">
+            <div class="ratio ratio-4x3">
+                <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d49283.15994192859!2d-0.4710293513671922!3d39.4648668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd604f154a8b0b0f%3A0x4c55854378421ed4!2sRetro%20Game%20Valencia!5e0!3m2!1ses!2ses!4v1744308599136!5m2!1ses!2ses"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include('../SinInicioSesion/footer') %>

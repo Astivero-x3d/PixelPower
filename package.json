@@ -1,0 +1,24 @@
+{
+  "name": "pixelpower",
+  "version": "1.0.0",
+  "description": "Hola soy Ismael Astillero, y esta es mi tienda de videojuegos, aqui podras comprar y vender juegos, consolas, mandos y accesorios, podras tambien crear aqui una cuenta de sesion, y podras actualizarla o eliminar tu cuenta.",
+  "license": "ISC",
+  "author": "Ismael Astillero",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [],
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mysql": "^2.18.1",
+    "nodemailer": "^6.10.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
