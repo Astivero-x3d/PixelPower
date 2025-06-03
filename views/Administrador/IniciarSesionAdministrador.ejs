@@ -1,0 +1,25 @@
+<%- include('../SinInicioSesion/header') %>
+
+<!-- Formulario de inicio de sesión -->
+<div class="container my-5 border border-dark border-5 rounded p-4">
+    <h2 class="mb-4 text-center">Iniciar sesión como Administrador</h2>
+    <p class="text-center text-muted mb-4">Inicia sesion rellenando en cada campo.</p>
+    <form action="/Administrador/IniciarSesionAdministrador" method="POST" id="FormularioIniciarSesionAdministrador">
+        <!-- Campo para el correo -->
+        <div class="mb-3">
+            <label for="correo" class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control" id="correo" name="correo" required>
+        </div>
+
+        <!-- Campo para la contraseña -->
+        <div class="mb-3">
+            <label for="contrasena" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Introduce tu contraseña (mínimo 6 y máximo 12 caracteres)" required>
+        </div>
+
+        <!-- Botón de envío -->
+        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+    </form>
+</div>
+
+<%- include('../SinInicioSesion/footer') %>

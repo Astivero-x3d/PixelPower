@@ -1,0 +1,175 @@
+<!-- Vista Administrador/ActualizarProductos.ejs -->
+
+<%- include('../Administrador/header') %>
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Actualizar Productos</h1>
+
+    <!-- Mostramos mensaje de éxito si existe -->
+    <% if (mensajeExito) { %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <%= mensajeExito %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <!-- Mostramos mensaje de error si existe -->
+    <% if (error) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <%= error %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <% } %>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Seleccionar Producto</h3>
+            <!-- Formulario para seleccionar un producto -->
+            <form method="POST" action="/Administrador/ActualizarProductos/select">
+                <div class="mb-3">
+                    <label for="productoId" class="form-label">Producto a actualizar:</label>
+                    <select class="form-select" id="productoId" name="productoId" required>
+                        <option value="">-- Selecciona un producto --</option>
+                        <!-- Iteramos sobre todos los productos disponibles -->
+                        <% productos.forEach(producto => { %>
+                            <option value="<%= producto.ID %>"
+                                    <%= productoSeleccionado && productoSeleccionado.ID === producto.ID ? 'selected' : '' %>>
+                                <%= producto.Nombre %> (<%= producto.Tipo %>) - <%= producto.Precio %>€
+                            </option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <button type="submit" class="btn btn-primary">Seleccionar</button>
+                    <a href="/Administrador/MenuPrincipalAdministrador" class="btn btn-danger">Menu principal</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Si hay un producto seleccionado, mostramos el formulario de actualización -->
+        <% if (productoSeleccionado) { %>
+            <div class="col-md-6">
+                <h3>Actualizar Producto</h3>
+                <!-- Formulario para actualizar el producto seleccionado -->
+                <form method="POST" action="/Administrador/ActualizarProductos/update" enctype="multipart/form-data">
+                    <input type="hidden" name="productoId" value="<%= productoSeleccionado.ID %>">
+
+                    <!-- Mostramos campos comunes a todos los productos -->
+                    <div class="mb-3">
+                        <label class="form-label">Tipo:</label>
+                        <input type="text" class="form-control" value="<%= productoSeleccionado.Tipo %>" readonly>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">Nombre:</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre"
+                               value="<%= productoSeleccionado.Nombre %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="precio" class="form-label">Precio (€):</label>
+                        <input type="number" step="0.01" class="form-control" id="precio" name="precio"
+                               value="<%= productoSeleccionado.Precio %>" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="imagen" class="form-label">Imagen (opcional):</label>
+                        <input type="file" class="form-control" id="imagen" name="imagen">
+                        <small class="text-muted">Deja vacío para mantener la imagen actual</small>
+                        <!-- Mostramos la imagen actual si existe -->
+                        <% if (productoSeleccionado.Imagen) { %>
+                            <div class="mt-2">
+                                <img src="<%= productoSeleccionado.Imagen %>" alt="Imagen actual" style="max-width: 100px;">
+                            </div>
+                        <% } %>
+                    </div>
+
+                    <!-- Mostramos campos específicos según el tipo de producto -->
+                    <% if (productoSeleccionado.Tipo === 'Consola' && productoSeleccionado.detalles) { %>
+                        <!-- Campos específicos para consolas -->
+                        <div class="mb-3">
+                            <label for="modelo" class="form-label">Modelo:</label>
+                            <input type="text" class="form-control" id="modelo" name="modelo"
+                                   value="<%= productoSeleccionado.detalles.Modelo %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="colorConsola" class="form-label">Color:</label>
+                            <input type="text" class="form-control" id="colorConsola" name="colorConsola"
+                                   value="<%= productoSeleccionado.detalles.Color %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="almacenamiento" class="form-label">Almacenamiento:</label>
+                            <input type="text" class="form-control" id="almacenamiento" name="almacenamiento"
+                                   value="<%= productoSeleccionado.detalles.Almacenamiento %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fabricanteConsola" class="form-label">Fabricante:</label>
+                            <input type="text" class="form-control" id="fabricanteConsola" name="fabricanteConsola"
+                                   value="<%= productoSeleccionado.detalles.Fabricante %>" required>
+                        </div>
+                    <% } else if (productoSeleccionado.Tipo === 'Juego' && productoSeleccionado.detalles) { %>
+                        <!-- Campos específicos para juegos -->
+                        <div class="mb-3">
+                            <label for="pegi" class="form-label">PEGI:</label>
+                            <select class="form-select" id="pegi" name="pegi" required>
+                                <option value="3" <%= productoSeleccionado.detalles.Pegi === '3' ? 'selected' : '' %>>3+</option>
+                                <option value="7" <%= productoSeleccionado.detalles.Pegi === '7' ? 'selected' : '' %>>7+</option>
+                                <option value="12" <%= productoSeleccionado.detalles.Pegi === '12' ? 'selected' : '' %>>12+</option>
+                                <option value="16" <%= productoSeleccionado.detalles.Pegi === '16' ? 'selected' : '' %>>16+</option>
+                                <option value="18" <%= productoSeleccionado.detalles.Pegi === '18' ? 'selected' : '' %>>18+</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="plataforma" class="form-label">Plataforma:</label>
+                            <input type="text" class="form-control" id="plataforma" name="plataforma"
+                                   value="<%= productoSeleccionado.detalles.Plataforma %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="jugadoresMinimo" class="form-label">Jugadores Mínimo:</label>
+                            <select class="form-select" id="jugadoresMinimo" name="jugadoresMinimo" required>
+                                <option value="1" <%= productoSeleccionado.detalles.Jugadores_Minimo === '1' ? 'selected' : '' %>>1</option>
+                                <option value="2" <%= productoSeleccionado.detalles.Jugadores_Minimo === '2' ? 'selected' : '' %>>2</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="jugadoresMaximo" class="form-label">Jugadores Máximo (opcional):</label>
+                            <select class="form-select" id="jugadoresMaximo" name="jugadoresMaximo">
+                                <option value="">-- Selecciona --</option>
+                                <option value="2" <%= productoSeleccionado.detalles.Jugadores_Maximo === '2' ? 'selected' : '' %>>2</option>
+                                <option value="3" <%= productoSeleccionado.detalles.Jugadores_Maximo === '3' ? 'selected' : '' %>>3</option>
+                                <option value="4" <%= productoSeleccionado.detalles.Jugadores_Maximo === '4' ? 'selected' : '' %>>4</option>
+                                <option value="5" <%= productoSeleccionado.detalles.Jugadores_Maximo === '5' ? 'selected' : '' %>>5</option>
+                                <option value="6" <%= productoSeleccionado.detalles.Jugadores_Maximo === '6' ? 'selected' : '' %>>6</option>
+                                <option value="7" <%= productoSeleccionado.detalles.Jugadores_Maximo === '7' ? 'selected' : '' %>>7</option>
+                                <option value="8" <%= productoSeleccionado.detalles.Jugadores_Maximo === '8' ? 'selected' : '' %>>8</option>
+                            </select>
+                        </div>
+                    <% } else if (productoSeleccionado.Tipo === 'Mando' && productoSeleccionado.detalles) { %>
+                        <!-- Campos específicos para mandos -->
+                        <div class="mb-3">
+                            <label for="conexion" class="form-label">Conexión:</label>
+                            <select class="form-select" id="conexion" name="conexion" required>
+                                <option value="inalambrica" <%= productoSeleccionado.detalles.Conexion === 'inalambrica' ? 'selected' : '' %>>Inalámbrica</option>
+                                <option value="alambrica" <%= productoSeleccionado.detalles.Conexion === 'alambrica' ? 'selected' : '' %>>Alámbrica</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="colorMando" class="form-label">Color:</label>
+                            <input type="text" class="form-control" id="colorMando" name="colorMando"
+                                   value="<%= productoSeleccionado.detalles.Color %>" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="fabricanteMando" class="form-label">Fabricante:</label>
+                            <input type="text" class="form-control" id="fabricanteMando" name="fabricanteMando"
+                                   value="<%= productoSeleccionado.detalles.Fabricante %>" required>
+                        </div>
+                    <% } %>
+
+                    <button type="submit" class="btn btn-success">Actualizar Producto</button>
+                </form>
+            </div>
+        <% } %>
+    </div>
+</div>
+
+<%- include('../Administrador/footer') %>

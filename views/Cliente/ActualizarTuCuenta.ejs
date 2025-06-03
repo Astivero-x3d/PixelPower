@@ -1,0 +1,106 @@
+<!-- Vista ActualizarTuCuenta.ejs -->
+
+<!-- Incluyo el header común para todas las páginas del cliente -->
+<%- include('../Cliente/header') %>
+
+<!-- Contenedor principal del formulario -->
+<div class="container my-5">
+    <!-- Formulario para actualizar los datos del cliente -->
+    <form action="/Cliente/ActualizarTuCuenta" method="POST" enctype="multipart/form-data" class="card mx-auto" style="max-width: 600px;">
+        <!-- Cabecera del formulario -->
+        <div class="card-header bg-dark text-white text-center">
+            <h4>Actualizar tu cuenta</h4>
+        </div>
+
+        <!-- Cuerpo del formulario -->
+        <div class="card-body">
+            <!-- Muestro la foto de perfil actual -->
+            <div class="text-center mb-3">
+                <img src="<%= cliente.foto %>" alt="Foto de Perfil" class="rounded-circle" width="150" height="150" style="object-fit: cover;">
+            </div>
+
+            <!-- Campo para subir nueva foto de perfil (opcional) -->
+            <div class="form-group mb-2">
+                <label>Foto de perfil (opcional)</label>
+                <input type="file" name="Foto_De_Perfil" class="form-control">
+            </div>
+
+            <!-- Campo para el nombre -->
+            <div class="form-group mb-2">
+                <label>Nombre</label>
+                <input type="text" name="Nombre" value="<%= cliente.nombre_de_persona %>" class="form-control" required>
+            </div>
+
+            <!-- Campo para los apellidos -->
+            <div class="form-group mb-2">
+                <label>Apellidos</label>
+                <input type="text" name="Apellidos" value="<%= cliente.apellidos %>" class="form-control" required>
+            </div>
+
+            <!-- Selector de género -->
+            <div class="form-group mb-2">
+                <label>Género</label>
+                <select name="Genero" class="form-control" required>
+                    <option value="masculino" <%= cliente.genero === 'masculino' ? 'selected' : '' %>>Masculino</option>
+                    <option value="femenino" <%= cliente.genero === 'femenino' ? 'selected' : '' %>>Femenino</option>
+                    <option value="otro" <%= cliente.genero === 'otro' ? 'selected' : '' %>>Otro</option>
+                </select>
+            </div>
+
+            <!-- Campo para la fecha de nacimiento -->
+            <div class="form-group mb-2">
+                <label>Fecha de nacimiento</label><p>(Si no vas a cambiar la fecha, pon la que siempre tienes puesto)</p>
+                <input type="date" name="Fecha_de_nacimiento"
+                       value="<%= cliente.La_fecha_de_nacimiento %>"
+                       class="form-control" required>
+            </div>
+
+            <!-- Campo para el nombre de usuario -->
+            <div class="form-group mb-2">
+                <label>Nombre de usuario</label>
+                <input type="text" name="Nombre_de_usuario" value="<%= cliente.nombre_de_usuario %>" class="form-control" required>
+            </div>
+
+            <!-- Campo para el correo electrónico -->
+            <div class="form-group mb-2">
+                <label>Correo</label>
+                <input type="email" name="Correo" value="<%= cliente.correo %>" class="form-control" required>
+            </div>
+
+            <!-- Campo para el teléfono -->
+            <div class="form-group mb-2">
+                <label>Teléfono</label>
+                <input type="number" name="Telefono" value="<%= cliente.el_telefono %>" class="form-control" required>
+            </div>
+
+            <!-- Campo para la ciudad -->
+            <div class="form-group mb-2">
+                <label>Ciudad</label>
+                <input type="text" name="Ciudad" value="<%= cliente.ciudad %>" class="form-control" required>
+            </div>
+
+            <!-- Botón para enviar el formulario -->
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div>
+        </div>
+
+        <!-- Muestro mensaje de éxito si existe -->
+        <% if (mensajeExito) { %>
+            <div class="alert alert-success"><%= mensajeExito %></div>
+        <% } %>
+
+        <!-- Muestro mensaje de error si existe -->
+        <% if (error) { %>
+            <div class="alert alert-danger"><%= error %></div>
+        <% } %>
+    </form>
+
+    <!-- Enlace para volver al menú principal -->
+    <div class="text-center mt-3">
+        <a href="/Cliente/MenuPrincipalCliente">Volver al menú principal</a>
+    </div>
+</div>
+
+<!-- Incluyo el footer común para todas las páginas del cliente -->
+<%- include('../Cliente/footer') %>

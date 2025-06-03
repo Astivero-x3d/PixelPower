@@ -1,0 +1,410 @@
+<%- include('../Cliente/header') %>
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Productos Disponibles</h1>
+
+    <% for (const tipo of tiposProducto) { %>
+        <div class="mb-5">
+            <h2 class="mb-3"><%= tipo %>s</h2>
+
+            <% if (productosPorTipo[tipo].length > 0) { %>
+                <div class="row">
+                    <% productosPorTipo[tipo].forEach(producto => { %>
+                        <div class="col-md-3 mb-4">
+                            <div class="card h-100">
+                                <div class="image-container" style="height: 200px; overflow: hidden;">
+                                    <img src="<%= producto.Imagen %>" class="img-fluid w-100 h-100" style="object-fit: contain;" alt="<%= producto.Nombre %>">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= producto.Nombre %></h5>
+                                    <p class="card-text">$<%= producto.Precio%></p>
+                                </div>
+                                <div class="card-footer bg-white">
+                                    <button class="btn btn-primary btn-sm btn-block add-to-cart"
+                                            data-product-id="<%= producto.ID %>">
+                                        <i class="fas fa-cart-plus"></i> Añadir al carrito
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+
+                <nav aria-label="Page navigation for <%= tipo %>">
+                    <ul class="pagination justify-content-center">
+                        <% if (infoPaginacion[tipo].tienePaginaAnterior) { %>
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="/Cliente/Comprar?<%=
+                                       Object.entries(infoPaginacion)
+                                               .map(([t, info]) => t === tipo ? `page_${t.toLowerCase()}=${info.paginaAnterior}` : `page_${t.toLowerCase()}=${info.pagina}`)
+                                               .join('&') %>#<%= tipo %>">
+                                    Anterior
+                                </a>
+                            </li>
+                        <% } %>
+
+                        <% for (let i = 1; i <= infoPaginacion[tipo].totalPaginas; i++) { %>
+                            <li class="page-item <%= i === infoPaginacion[tipo].pagina ? 'active' : '' %>">
+                                <a class="page-link"
+                                   href="/Cliente/Comprar?<%=
+                                       Object.entries(infoPaginacion)
+                                               .map(([t, info]) => t === tipo ? `page_${t.toLowerCase()}=${i}` : `page_${t.toLowerCase()}=${info.pagina}`)
+                                               .join('&') %>#<%= tipo %>">
+                                    <%= i %>
+                                </a>
+                            </li>
+                        <% } %>
+
+                        <% if (infoPaginacion[tipo].tienePaginaSiguiente) { %>
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="/Cliente/Comprar?<%=
+                                       Object.entries(infoPaginacion)
+                                               .map(([t, info]) => t === tipo ? `page_${t.toLowerCase()}=${info.paginaSiguiente}` : `page_${t.toLowerCase()}=${info.pagina}`)
+                                               .join('&') %>#<%= tipo %>">
+                                    Siguiente
+                                </a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </nav>
+            <% } else { %>
+                <div class="alert alert-info">No hay productos de este tipo disponibles.</div>
+            <% } %>
+        </div>
+    <% } %>
+
+    <div class="floating-cart">
+        <button class="btn btn-warning position-relative" data-bs-toggle="modal" data-bs-target="#carritoModal">
+            <i class="fas fa-shopping-cart"></i>
+            <span id="carrito-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
+                0
+            </span>
+        </button>
+    </div>
+</div>
+
+<div class="modal fade" id="carritoModal" tabindex="-1" aria-labelledby="carritoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="carritoModalLabel">Tu Carrito de Compras</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="carritoModalBody">
+                <div class="text-center my-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+                <% if (carritoItems && carritoItems.length > 0) { %>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Cantidad</th>
+                                <th>Subtotal</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% carritoItems.forEach(item => { %>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <% if (item.producto && item.producto.Imagen) { %>
+                                                <img src="<%= item.producto.Imagen %>" alt="<%= item.producto.Nombre %>" style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
+                                            <% } %>
+                                            <div>
+                                                <h6 class="mb-0"><%= item.producto ? item.producto.Nombre : 'Producto no disponible' %></h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>$<%= item.producto ? item.producto.Precio : '0.00' %></td>
+                                    <td>
+                                        <div class="input-group" style="width: 120px;">
+                                            <button class="btn btn-outline-secondary decrement-btn" data-product-id="<%= item.productId %>">-</button>
+                                            <input type="text" class="form-control text-center quantity-input" value="<%= item.quantity %>" data-product-id="<%= item.productId %>">
+                                            <button class="btn btn-outline-secondary increment-btn" data-product-id="<%= item.productId %>">+</button>
+                                        </div>
+                                    </td>
+                                    <td>$<%= item.producto ? (item.producto.Precio * item.quantity).toFixed(2) : '0.00' %></td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm remove-item" data-product-id="<%= item.productId %>">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                                <td colspan="2">
+                                    $<%= carritoItems.reduce((total, item) => {
+                                        return total + (item.producto ? item.producto.Precio * item.quantity : 0);
+                                    }, 0).toFixed(2) %>
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                <% } else { %>
+                    <div class="alert alert-info">Tu carrito está vacío</div>
+                <% } %>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Seguir Comprando</button>
+                <a href="/Cliente/Carrito" class="btn btn-primary" id="btnVerCarritoCompleto" style="display: none;">Ver Carrito Completo</a>
+                <a href="/Cliente/Checkout" class="btn btn-success" id="btnFinalizarCompra" style="display: none;">Finalizar Compra</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const botones = document.querySelectorAll('.add-to-cart'); // Renombrado de buttons a botones
+        const contadorCarritoSpan = document.getElementById('carrito-count'); // Renombrado de carritoCountSpan a contadorCarritoSpan
+        const modalCarrito = new bootstrap.Modal(document.getElementById('carritoModal')); // Renombrado de carritoModal a modalCarrito
+        const cuerpoModalCarrito = document.getElementById('carritoModalBody'); // Renombrado de carritoModalBody a cuerpoModalCarrito
+
+        // Función para actualizar el contador del carrito
+        function actualizarContadorCarrito(cantidad) { // Renombrado de updateCartCount a actualizarContadorCarrito y count a cantidad
+            contadorCarritoSpan.textContent = cantidad;
+        }
+
+        // Función para renderizar los items del carrito en el modal
+        function renderizarItemsCarrito(items) { // Renombrado de renderCarritoItems a renderizarItemsCarrito
+            const btnVerCarrito = document.querySelector('#btnVerCarritoCompleto');
+            const btnFinalizarCompra = document.querySelector('#btnFinalizarCompra');
+
+            if (!items || items.length === 0) {
+                cuerpoModalCarrito.innerHTML = `
+            <div class="alert alert-info">Tu carrito está vacío</div>
+        `;
+
+                // Ocultar botones cuando el carrito está vacío
+                btnVerCarrito.style.display = 'none';
+                btnFinalizarCompra.style.display = 'none';
+                return;
+            }
+
+            let html = `
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            items.forEach(item => {
+                html += `
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            ${item.producto && item.producto.Imagen ?
+                    `<img src="${item.producto.Imagen}" alt="${item.producto.Nombre}"
+                                style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">`
+                    : ''}
+                            <div>
+                                <h6 class="mb-0">${item.producto ? item.producto.Nombre : 'Producto no disponible'}</h6>
+                            </div>
+                        </div>
+                    </td>
+                    <td>$${item.producto ? item.producto.Precio : '0.00'}</td>
+                    <td>
+                        <div class="input-group" style="width: 120px;">
+                            <button class="btn btn-outline-secondary decrement-btn"
+                                data-product-id="${item.productId}">-</button>
+                            <input type="text" class="form-control text-center quantity-input"
+                                value="${item.quantity}" data-product-id="${item.productId}">
+                            <button class="btn btn-outline-secondary increment-btn"
+                                data-product-id="${item.productId}">+</button>
+                        </div>
+                    </td>
+                    <td>$${item.producto ? (item.producto.Precio * item.quantity).toFixed(2) : '0.00'}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm remove-item"
+                            data-product-id="${item.productId}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `;
+            });
+
+            // Calcular el total
+            const total = items.reduce((sum, item) => {
+                return sum + (item.producto ? item.producto.Precio * item.quantity : 0);
+            }, 0);
+
+            html += `
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                            <td colspan="2">$${total.toFixed(2)}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        `;
+
+            btnVerCarrito.style.display = 'inline-block';
+            btnFinalizarCompra.style.display = 'inline-block';
+
+
+            cuerpoModalCarrito.innerHTML = html;
+        }
+
+        // Función para cargar los items del carrito desde el servidor
+        function cargarItemsCarrito() { // Renombrado de loadCartItems a cargarItemsCarrito
+            fetch('/Cliente/ObtenerCarrito')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        renderizarItemsCarrito(data.itemsCarrito); // Renombrado
+                    } else {
+                        console.error('Error al cargar carrito:', data.message);
+                    }
+                })
+                .catch(err => {
+                    console.error('Error al cargar carrito:', err);
+                });
+        }
+
+        // Función para actualizar la cantidad de un producto en el carrito
+        function actualizarItemCarrito(productId, quantity) { // Renombrado de updateCartItem a actualizarItemCarrito
+            return fetch('/Cliente/ActualizarCantidadCarrito', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ productId, quantity })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        actualizarContadorCarrito(data.contadorCarrito); // Renombrado
+                        cargarItemsCarrito(); // Recargar los items del carrito // Renombrado
+                        return data;
+                    }
+                    throw new Error(data.message || 'Error al actualizar el carrito');
+                });
+        }
+
+        // Función para eliminar un producto del carrito
+        function eliminarItemCarrito(productId) { // Renombrado de removeCartItem a eliminarItemCarrito
+            return fetch('/Cliente/EliminarDelCarrito', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ productId })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        actualizarContadorCarrito(data.contadorCarrito); // Renombrado
+                        cargarItemsCarrito(); // Recargar los items del carrito // Renombrado
+                        return data;
+                    }
+                    throw new Error(data.message || 'Error al eliminar del carrito');
+                });
+        }
+
+        // Cargar contador y items del carrito al iniciar
+        fetch('/Cliente/ObtenerCantidadCarrito')
+            .then(response => response.json())
+            .then(data => {
+                if (data.contadorCarrito !== undefined) { // Renombrado
+                    actualizarContadorCarrito(data.contadorCarrito); // Renombrado
+                }
+            })
+            .catch(err => {
+                console.error("Error al obtener la cantidad del carrito:", err);
+            });
+
+        // Cargar items del carrito cuando se abre el modal
+        document.getElementById('carritoModal').addEventListener('show.bs.modal', function () {
+            cargarItemsCarrito(); // Renombrado
+        });
+
+        // Añadir al carrito
+        botones.forEach(button => { // Renombrado de buttons a botones
+            button.addEventListener('click', function () {
+                const productId = this.getAttribute('data-product-id');
+
+                fetch('/Cliente/AgregarAlCarrito', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ productId: productId })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            actualizarContadorCarrito(data.contadorCarrito); // Renombrado
+                            cargarItemsCarrito(); // Recargar los items del carrito // Renombrado
+                            modalCarrito.show(); // Renombrado
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Error al añadir al carrito:", err);
+                    });
+            });
+        });
+
+        // Delegación de eventos para los botones dinámicos del carrito
+        document.addEventListener('click', function(e) {
+            // Incrementar cantidad
+            if (e.target.classList.contains('increment-btn')) {
+                const productId = e.target.getAttribute('data-product-id');
+                const input = e.target.closest('.input-group').querySelector('.quantity-input');
+                const nuevaCantidad = parseInt(input.value) + 1; // Renombrado de newQuantity a nuevaCantidad
+
+                actualizarItemCarrito(productId, nuevaCantidad) // Renombrado
+                    .then(() => {
+                        input.value = nuevaCantidad;
+                    })
+                    .catch(err => alert(err.message));
+            }
+
+            // Decrementar cantidad
+            if (e.target.classList.contains('decrement-btn')) {
+                const productId = e.target.getAttribute('data-product-id');
+                const input = e.target.closest('.input-group').querySelector('.quantity-input');
+                let nuevaCantidad = parseInt(input.value) - 1; // Renombrado de newQuantity a nuevaCantidad
+
+                if (nuevaCantidad < 1) nuevaCantidad = 1;
+
+                actualizarItemCarrito(productId, nuevaCantidad) // Renombrado
+                    .then(() => {
+                        input.value = nuevaCantidad;
+                    })
+                    .catch(err => alert(err.message));
+            }
+
+            // Eliminar producto
+            if (e.target.classList.contains('remove-item') || e.target.closest('.remove-item')) {
+                const button = e.target.classList.contains('remove-item') ? e.target : e.target.closest('.remove-item');
+                const productId = button.getAttribute('data-product-id');
+
+                if (confirm('¿Estás seguro de que quieres eliminar este producto del carrito?')) {
+                    eliminarItemCarrito(productId) // Renombrado
+                        .catch(err => alert(err.message));
+                }
+            }
+        });
+    });
+</script>
+
+<%- include('../Cliente/footer') %>

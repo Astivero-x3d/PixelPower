@@ -1,0 +1,193 @@
+<%- include('../Administrador/header') %>
+
+<div class="container my-5">
+    <h2 class="mb-4 text-center">Añadir Productos</h2>
+
+    <!-- Contenedor principal del formulario -->
+    <div class="row justify-content-center border border-dark border-5 rounded">
+        <div class="col-md-8">
+            <!-- Formulario para añadir productos -->
+            <form action="/Administrador/AnadirProductos" method="POST" enctype="multipart/form-data">
+                <!-- Campo para seleccionar el tipo de producto -->
+                <div class="mb-3">
+                    <label for="tipo">Tipo de Producto:</label>
+                    <select name="tipo" id="tipo" class="form-control" required onchange="mostrarDetalles()">
+                        <option value="">-- Selecciona tipo --</option>
+                        <option value="Juego">Juego</option>
+                        <option value="Consola">Consola</option>
+                        <option value="Mando">Mando</option>
+                        <option value="Accesorio">Accesorio</option>
+                    </select>
+                </div>
+
+                <!-- Campos comunes a todos los productos -->
+                <div class="mb-3">
+                    <label for="nombre">Nombre:</label>
+                    <input type="text" name="nombre" id="nombre" class="form-control" maxlength="100" required>
+                </div>
+                <div class="mb-3">
+                    <label for="precio">Precio:</label>
+                    <input type="number" name="precio" id="precio" class="form-control" step="0.01" min="0" required>
+                </div>
+                <div class="mb-3">
+                    <label for="imagen">Imagen (archivo):</label>
+                    <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*" required>
+                    <small class="form-text text-muted">Por favor, sube una imagen del producto.</small>
+                </div>
+
+                <!-- Sección de detalles específicos para Consola (oculta inicialmente) -->
+                <div id="detallesConsola" style="display:none; margin-top:1em;">
+                    <h4>Detalles Consola</h4>
+                    <div class="mb-3">
+                        <label for="modulo">Módelo:</label>
+                        <input type="text" name="modelo" id="modelo" class="form-control" maxlength="255">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="colorConsola">Color:</label>
+                        <input type="text" name="colorConsola" id="colorConsola" class="form-control" maxlength="50">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="almacenamiento">Almacenamiento:</label>
+                        <input type="text" name="almacenamiento" id="almacenamiento" class="form-control" maxlength="50">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fabricanteConsola">Fabricante:</label>
+                        <input type="text" name="fabricanteConsola" id="fabricanteConsola" class="form-control" maxlength="100">
+                    </div>
+                </div>
+
+                <!-- Sección de detalles específicos para Juego (oculta inicialmente) -->
+                <div id="detallesJuego" style="display:none; margin-top:1em;">
+                    <h4>Detalles Juego</h4>
+
+                    <div class="mb-3">
+                        <label for="pegi">PEGI:</label>
+                        <select name="pegi" id="pegi" class="form-control">
+                            <option value="">--Selecciona--</option>
+                            <option value="3">3</option>
+                            <option value="7">7</option>
+                            <option value="12">12</option>
+                            <option value="16">16</option>
+                            <option value="18">18</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="plataforma">Plataforma:</label>
+                        <input type="text" name="plataforma" id="plataforma" class="form-control" maxlength="150">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="jugadoresMinimo">Jugadores mínimo:</label>
+                        <select name="jugadoresMinimo" id="jugadoresMinimo" class="form-control">
+                            <option value="">--Selecciona--</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="jugadoresMaximo">Jugadores máximo:</label>
+                        <select name="jugadoresMaximo" id="jugadoresMaximo" class="form-control">
+                            <option value="">--Selecciona--</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Sección de detalles específicos para Mando (oculta inicialmente) -->
+                <div id="detallesMando" style="display:none; margin-top:1em;">
+                    <h4>Detalles Mando</h4>
+
+                    <div class="mb-3">
+                        <label for="conexion">Conexión:</label>
+                        <select name="conexion" id="conexion" class="form-control">
+                            <option value="">--Selecciona--</option>
+                            <option value="inalambrica">Inalámbrica</option>
+                            <option value="alambrica">Alámbrica</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="colorMando">Color:</label>
+                        <input type="text" name="colorMando" id="colorMando" class="form-control" maxlength="50">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="fabricanteMando">Fabricante:</label>
+                        <input type="text" name="fabricanteMando" id="fabricanteMando" class="form-control" maxlength="100">
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <button type="submit" class="btn btn-primary">Añadir Producto</button>
+                    <a href="/Administrador/MenuPrincipalAdministrador" class="btn btn-danger">Menu principal</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mostrar mensaje de éxito si existe -->
+    <% if (mensajeExito) { %>
+        <div class="alert alert-success text-center" id="mensajeExito">
+            <%= mensajeExito %>
+        </div>
+    <% } %>
+
+    <!-- Script para manejar la visualización dinámica de los campos -->
+    <script>
+        // Función para mostrar/ocultar los campos específicos según el tipo de producto seleccionado
+        function mostrarDetalles() {
+            const tipo = document.getElementById('tipo').value;
+
+            // Mostrar u ocultar las secciones según el tipo
+            document.getElementById('detallesConsola').style.display = (tipo === 'Consola') ? 'block' : 'none';
+            document.getElementById('detallesJuego').style.display = (tipo === 'Juego') ? 'block' : 'none';
+            document.getElementById('detallesMando').style.display = (tipo === 'Mando') ? 'block' : 'none';
+
+            // Manejar los atributos required dinámicamente
+            const detallesTipos = ['detallesConsola', 'detallesJuego', 'detallesMando'];
+            detallesTipos.forEach(id => {
+                if (id !== `detalles${tipo}`) {
+                    const elemento = document.getElementById(id);
+                    if (elemento) {
+                        elemento.querySelectorAll('input, select').forEach(input => {
+                            input.removeAttribute('required');
+                        });
+                    }
+                } else {
+                    const elemento = document.getElementById(id);
+                    if (elemento) {
+                        elemento.querySelectorAll('input, select').forEach(input => {
+                            // No hacer required algunos campos específicos que pueden ser opcionales
+                            if (input.id !== 'pegi' && input.id !== 'jugadoresMinimo' && input.id !== 'jugadoresMaximo' && input.id !== 'conexion') {
+                                input.setAttribute('required', '');
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        // Ocultar el mensaje de éxito después de 5 segundos
+        setTimeout(() => {
+            const mensaje = document.getElementById('mensajeExito');
+            if (mensaje) mensaje.style.display = 'none';
+        }, 5000);
+
+        // Ejecutar mostrarDetalles al cargar la página (por si hay valores pre-seleccionados)
+        document.addEventListener('DOMContentLoaded', mostrarDetalles);
+    </script>
+</div>
+
+<%- include('../Administrador/footer') %>

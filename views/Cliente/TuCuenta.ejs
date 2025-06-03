@@ -1,0 +1,44 @@
+<%- include('../Cliente/header') %> <!-- Incluimos el header de la sección de cliente -->
+
+<div class="container my-5">
+    <div class="card mx-auto" style="max-width: 500px;">
+        <!-- Mostramos el encabezado de la tarjeta con el título del perfil -->
+        <div class="card-header bg-dark text-white text-center">
+            <h4>Tu perfil</h4>
+        </div>
+
+        <!-- Mostramos los datos del cliente dentro del cuerpo de la tarjeta -->
+        <div class="card-body text-center">
+            <!-- Mostramos la foto de perfil del cliente -->
+            <img src="<%= cliente.foto %>" alt="Foto de Perfil" class="rounded-circle mb-3" width="150" height="150" style="object-fit: cover;">
+
+            <!-- Mostramos el nombre del cliente -->
+            <p class="card-text"><strong>Nombre:</strong> <%= cliente.nombre_de_persona %></p>
+
+            <!-- Mostramos los apellidos del cliente -->
+            <p class="card-text"><strong>Apellidos:</strong> <%= cliente.apellidos %></p>
+
+            <!-- Mostramos el género del cliente -->
+            <p class="card-text"><strong>Genero:</strong> <%= cliente.genero %></p>
+
+            <!-- Mostramos la fecha de nacimiento en formato YYYY-MM-DD -->
+            <p class="card-text"><strong>Fecha de nacimiento:</strong> <%= new Date(cliente.La_fecha_de_nacimiento).toISOString().split('T')[0] %></p>
+
+            <!-- Mostramos el nombre de usuario -->
+            <p class="card-text"><strong>Nombre de usuario:</strong> <%= cliente.nombre_de_usuario %></p>
+
+            <!-- Mostramos el correo del cliente -->
+            <p class="card-text"><strong>Correo:</strong> <%= cliente.correo %></p>
+
+            <!-- Mostramos la ciudad del cliente -->
+            <p class="card-text"><strong>Ciudad:</strong> <%= cliente.ciudad %></p>
+        </div>
+
+        <!-- Añadimos un enlace para volver al menú principal del cliente -->
+        <div class="card-footer text-center">
+            <a href="/Cliente/MenuPrincipalCliente">Menu principal</a>
+        </div>
+    </div>
+</div>
+
+<%- include('../Cliente/footer') %> <!-- Incluimos el footer de la sección de cliente -->

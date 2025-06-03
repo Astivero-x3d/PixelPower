@@ -1,0 +1,74 @@
+<%- include('../Cliente/header') %>
+
+<div class="container mt-4">
+    <!-- Creo la tarjeta principal de confirmación -->
+    <div class="card text-center">
+        <div class="card-header bg-success text-white">
+            <h2>¡Pedido Confirmado!</h2>
+        </div>
+        <div class="card-body">
+            <!-- Muestro un icono de check grande para indicar éxito -->
+            <i class="fas fa-check-circle fa-5x text-success mb-4"></i>
+            <!-- Saludo personalizado al cliente -->
+            <h3 class="card-title">Gracias por tu compra, <%= cliente.Nombre %></h3>
+            <p class="card-text">Tu pedido ha sido procesado exitosamente.</p>
+            <!-- Muestro los datos principales del pedido -->
+            <p class="card-text">Número de pedido: <strong>#<%= pedido.ID %></strong></p>
+            <p class="card-text">Fecha: <strong><%= new Date(pedido.Fecha).toLocaleDateString() %></strong></p>
+            <p class="card-text">Total: <strong>$<%= pedido.Total %></strong></p>
+
+            <!-- Agrego botones de acción para el cliente -->
+            <div class="mt-4">
+                <a href="/Cliente/Comprar" class="btn btn-primary">Seguir Comprando</a>
+                <a href="/Cliente/HistorialDeCompras" class="btn btn-secondary">Ver Mis Pedidos</a>
+
+                <!-- Botón para descargar el ticket en PDF -->
+                <a href="<%= pdfPath %>" class="btn btn-info" target="_blank" download="Ticket_PixelPower_<%= pedido.ID %>.pdf">
+                    <i class="fas fa-file-pdf"></i> Ver Ticket
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Creo una sección adicional para mostrar los detalles del pedido -->
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>Detalles del Pedido</h4>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <!-- Tabla con los productos comprados -->
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio Unitario</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Itero sobre cada producto del pedido -->
+                    <% detalles.forEach(detalle => { %>
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <!-- Si el producto tiene imagen, la muestro -->
+                                    <% if (detalle.Imagen) { %>
+                                        <img src="<%= detalle.Imagen %>" alt="<%= detalle.Nombre %>"
+                                             style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
+                                    <% } %>
+                                    <div>
+                                        <h6 class="mb-0"><%= detalle.Nombre %></h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>$<%= detalle.Precio %></td>
+                        </tr>
+                    <% }); %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('../Cliente/footer') %>

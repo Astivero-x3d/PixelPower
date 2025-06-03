@@ -1,0 +1,99 @@
+<!-- Vista EJS del formulario de registro -->
+
+<!-- Incluimos el header común para páginas sin sesión iniciada -->
+<%- include('../SinInicioSesion/header') %>
+
+<!-- Sección principal del formulario -->
+<section class="container my-5 border border-dark border-5 rounded p-4">
+    <h2 class="mb-4 text-center">Crear una cuenta de Cliente</h2>
+
+    <p class="text-center text-muted mb-4">Rellena todos los campos para completar tu registro como Cliente.</p>
+
+    <!-- Formulario con método POST y enctype para subida de archivos -->
+    <form method="POST" action="/Cliente/RegistrarSesionCliente" enctype="multipart/form-data" id="FormularioAltaCliente">
+        <!-- Campo para el nombre -->
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Introduce tu nombre (máximo 50 letras)" required>
+        </div>
+
+        <!-- Campo para apellidos -->
+        <div class="mb-3">
+            <label for="apellidos" class="form-label">Apellidos</label>
+            <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Introduce tus apellidos (máximo 80 letras)" required>
+        </div>
+
+        <!-- Selector de género -->
+        <div class="mb-3">
+            <label for="genero" class="form-label">Genero</label>
+            <select name="genero" id="genero" class="form-select">
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
+            </select>
+        </div>
+
+        <!-- Campo para fecha de nacimiento -->
+        <div class="mb-3">
+            <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
+        </div>
+
+        <!-- Campo para subir foto de perfil -->
+        <div class="mb-3">
+            <label for="foto_perfil" class="form-label">Foto de perfil</label>
+            <input type="file" class="form-control" id="foto_perfil" name="foto_perfil" accept="image/*" required>
+        </div>
+
+        <!-- Campo para nombre de usuario -->
+        <div class="mb-3">
+            <label for="usuario" class="form-label">Nombre de Usuario</label>
+            <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Introduce tu nombre de usuario (máximo 30 letras)" required>
+        </div>
+
+        <!-- Campo para contraseña -->
+        <div class="mb-3">
+            <label for="contraseña" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Introduce tu contraseña (mínimo 6 y máximo 12 caracteres)" required>
+        </div>
+
+        <!-- Campo para correo electrónico -->
+        <div class="mb-3">
+            <label for="correo" class="form-label">Correo</label>
+            <input type="email" class="form-control" id="correo" name="correo" placeholder="Introduce tu correo electrónico" required>
+        </div>
+
+        <!-- Campo para teléfono -->
+        <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="tel" class="form-control" id="telefono" name="telefono" pattern="[0-9]{9}" placeholder="Introduce tu teléfono (9 dígitos)" required>
+        </div>
+
+        <!-- Campo para ciudad -->
+        <div class="mb-3">
+            <label for="ciudad" class="form-label">Ciudad</label>
+            <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Introduce tu ciudad" required>
+        </div>
+
+        <br><br>
+
+        <!-- Div para mostrar mensajes de error -->
+        <div class="mb-3 text-center">
+            <p id="informacion" class="text-danger fw-bold" style="display: none;"></p>
+        </div>
+
+        <!-- Botón de submit -->
+        <div class="mb-3 text-center">
+            <button type="submit" class="btn btn-primary">Registrar</button>
+        </div>
+
+        <!-- Enlace para redirigir a login si ya tiene cuenta -->
+        <div class="border border-2 border-primary text-center bg-primary rounded-pill">
+            <p>Tienes ya cuenta creada??</p>
+            <a href="/Cliente/IniciarSesionCliente" class="text-white text-decoration-none">Inicia Sesion Aqui</a>
+        </div>
+    </form>
+</section>
+
+<!-- Incluimos el footer común -->
+<%- include('../SinInicioSesion/footer') %>

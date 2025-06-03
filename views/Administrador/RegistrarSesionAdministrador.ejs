@@ -1,0 +1,95 @@
+<%- include('../SinInicioSesion/header') %>
+
+<section class="container my-5 border border-dark border-5 rounded p-4">
+    <h2 class="mb-4 text-center">Crear cuenta de Administrador</h2>
+
+    <p class="text-center text-muted mb-4">Rellena todos los campos para completar tu registro como administrador.</p>
+
+    <!-- Formulario de registro -->
+    <form method="POST" action="/Administrador/RegistrarSesionAdministrador" enctype="multipart/form-data" id="FormularioAltaAdministrador">
+
+        <!-- Nombre -->
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Introduce tu nombre (máximo 50 letras)" required>
+        </div>
+
+        <!-- Apellidos -->
+        <div class="mb-3">
+            <label for="apellidos" class="form-label">Apellidos</label>
+            <input type="text" class="form-control" id="apellidos" name="apellidos" placeholder="Introduce tus apellidos (máximo 80 letras)" required>
+        </div>
+
+        <!-- Género -->
+        <div class="mb-3">
+            <label for="genero" class="form-label">Genero</label>
+            <select name="genero" id="genero" class="form-select">
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
+            </select>
+        </div>
+
+        <!-- Fecha de nacimiento -->
+        <div class="mb-3">
+            <label for="fecha_nacimiento" class="form-label">Fecha de Nacimiento</label>
+            <input type="date" class="form-control" id="fecha_nacimiento" name="fecha_nacimiento" required>
+        </div>
+
+        <!-- Foto de perfil -->
+        <div class="mb-3">
+            <label for="foto_perfil" class="form-label">Foto de perfil</label>
+            <input type="file" class="form-control" id="foto_perfil" name="foto_perfil" accept="image/*" required>
+        </div>
+
+        <!-- Usuario -->
+        <div class="mb-3">
+            <label for="usuario" class="form-label">Nombre de Usuario</label>
+            <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Introduce tu nombre de usuario (máximo 30 letras)" required>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="mb-3">
+            <label for="contraseña" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Introduce tu contraseña (mínimo 6 y máximo 12 caracteres)" required>
+        </div>
+
+        <!-- Correo -->
+        <div class="mb-3">
+            <label for="correo" class="form-label">Correo</label>
+            <input type="email" class="form-control" id="correo" name="correo" placeholder="Introduce tu correo electrónico" required>
+        </div>
+
+        <!-- Teléfono -->
+        <div class="mb-3">
+            <label for="telefono" class="form-label">Teléfono</label>
+            <input type="tel" class="form-control" id="telefono" name="telefono" pattern="[0-9]{9}" placeholder="Introduce tu teléfono (9 dígitos)" required>
+        </div>
+
+        <!-- Ciudad -->
+        <div class="mb-3">
+            <label for="ciudad" class="form-label">Ciudad</label>
+            <input type="text" class="form-control" id="ciudad" name="ciudad" placeholder="Introduce tu ciudad" required>
+        </div>
+
+        <br><br>
+
+        <!-- Mensaje de validación -->
+        <div class="mb-3 text-center">
+            <p id="informacion" class="text-danger fw-bold" style="display: none;"></p>
+        </div>
+
+        <!-- Botón de registro -->
+        <div class="mb-3 text-center">
+            <button type="submit" class="btn btn-primary">Registrar</button>
+        </div>
+
+        <!-- Enlace a iniciar sesión -->
+        <div class="border border-2 border-primary text-center bg-primary rounded-pill">
+            <p>Tienes ya cuenta creada??</p>
+            <a href="/Administrador/IniciarSesionAdministrador" class="text-white text-decoration-none">Inicia Sesion Aqui</a>
+        </div>
+    </form>
+</section>
+
+<%- include('../SinInicioSesion/footer') %>

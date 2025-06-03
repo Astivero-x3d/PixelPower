@@ -1,0 +1,20 @@
+<%- include('../Administrador/header') %>
+
+<!-- Contenedor principal del panel de administrador -->
+<div class="d-flex flex-column gap-3 container align-items-center text-center border border-5 border-dark my-5 " style="min-height: 100vh; justify-content: center;">
+    <h1 class="fw-bold">Panel de Administración</h1>
+    <p class="text-muted mb-4 w-75">
+        Bienvenido al centro de gestión de tu tienda. Desde aquí puedes acceder al listado de clientes, gestionar productos y mantener tu inventario al día.
+    </p>
+
+    <!-- Botones de navegación del panel -->
+    <a href="/Administrador/TuCuenta" class="btn btn-light mx-auto w-50">Tu cuenta</a>
+    <a href="/Administrador/ListadoDeLosClientes" class="btn btn-success mx-auto w-50">Listado de los clientes</a>
+    <a href="/Administrador/AnadirProductos" class="btn btn-primary mx-auto w-50">Anadir productos</a>
+    <a href="/Administrador/EliminarProductos" class="btn btn-danger mx-auto w-50">Eliminar productos</a>
+    <a href="/Administrador/ActualizarProductos" class="btn btn-warning mx-auto w-50">Actualizar productos</a>
+    <a href="/Administrador/ListadoDeLosProductos" class="btn btn-info mx-auto w-50">Listado de productos</a>
+</div>
+
+
+<%- include('../Administrador/footer') %>

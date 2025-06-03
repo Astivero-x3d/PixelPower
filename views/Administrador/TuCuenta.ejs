@@ -1,0 +1,39 @@
+<%- include('../Administrador/header') %>
+
+<!-- Contenedor principal -->
+<div class="container my-5">
+
+    <!-- Card centrada con un ancho máximo -->
+    <div class="card mx-auto" style="max-width: 500px;">
+
+        <!-- Cabecera de la tarjeta -->
+        <div class="card-header bg-dark text-white text-center">
+            <h4>Perfil del Administrador</h4>
+        </div>
+
+        <!-- Cuerpo de la tarjeta con los datos del administrador -->
+        <div class="card-body text-center">
+            <!-- Imagen de perfil del administrador -->
+            <img src="<%= admin.foto %>" alt="Foto de Perfil" class="rounded-circle mb-3" width="150" height="150" style="object-fit: cover;">
+
+            <!-- Datos personales del administrador -->
+            <p class="card-text"><strong>Nombre:</strong> <%= admin.nombre_de_persona %></p>
+            <p class="card-text"><strong>Apellidos:</strong> <%= admin.apellidos %></p>
+            <p class="card-text"><strong>Genero:</strong> <%= admin.genero %></p>
+            <p class="card-text"><strong>Fecha de nacimiento:</strong> <%= admin.La_fecha_de_nacimiento%></p>
+            <p class="card-text"><strong>Nombre de usuario:</strong> <%= admin.nombre_de_usuario %></p>
+            <p class="card-text"><strong>Correo:</strong> <%= admin.correo %></p>
+            <p class="card-text"><strong>Ciudad:</strong> <%= admin.ciudad %></p>
+        </div>
+
+        <!-- Pie de la tarjeta con enlace al menú principal del administrador -->
+        <div class="card-footer text-center">
+            <a href="/Administrador/MenuPrincipalAdministrador">Menu principal</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+<%- include('../Administrador/footer') %>

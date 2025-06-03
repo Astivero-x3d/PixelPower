@@ -1,0 +1,30 @@
+<%- include('../SinInicioSesion/header') %> <!-- Incluimos el header para las páginas sin inicio de sesión -->
+
+<div class="container my-5 border border-dark border-5 rounded p-4">
+    <!-- Mostramos el título principal centrado -->
+    <h2 class="mb-4 text-center">Iniciar sesión como Cliente</h2>
+
+    <!-- Mostramos una pequeña descripción debajo del título -->
+    <p class="text-center text-muted mb-4">Inicia sesion rellenando en cada campo.</p>
+
+    <!-- Creamos el formulario que envía los datos por POST a la ruta /Cliente/IniciarSesionCliente -->
+    <form action="/Cliente/IniciarSesionCliente" method="POST" id="FormularioIniciarSesionCliente">
+
+        <!-- Campo para escribir el correo electrónico -->
+        <div class="mb-3">
+            <label for="correo" class="form-label">Correo electrónico</label>
+            <input type="email" class="form-control" id="correo" name="correo" required>
+        </div>
+
+        <!-- Campo para escribir la contraseña -->
+        <div class="mb-3">
+            <label for="contrasena" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" id="contrasena" name="contrasena" placeholder="Introduce tu contraseña (mínimo 6 y máximo 12 caracteres)" required>
+        </div>
+
+        <!-- Botón para enviar el formulario e intentar iniciar sesión -->
+        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+    </form>
+</div>
+
+<%- include('../SinInicioSesion/footer') %> <!-- Incluimos el footer para las páginas sin inicio de sesión -->

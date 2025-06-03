@@ -1,0 +1,131 @@
+<%- include('../Cliente/header') %>
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Finalizar Compra</h1>
+
+    <!-- Verificamos si hay productos en el carrito -->
+    <% if (carritoItems && carritoItems.length > 0) { %>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5>Resumen del Pedido</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Precio</th>
+                                    <th>Cantidad</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- Iteramos sobre cada item del carrito -->
+                                <% carritoItems.forEach(item => { %>
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <!-- Mostramos la imagen del producto si está disponible -->
+                                                <% if (item.producto && item.producto.Imagen) { %>
+                                                    <img src="<%= item.producto.Imagen %>" alt="<%= item.producto.Nombre %>"
+                                                         style="width: 50px; height: 50px; object-fit: contain; margin-right: 10px;">
+                                                <% } %>
+                                                <div>
+                                                    <h6 class="mb-0"><%= item.producto ? item.producto.Nombre : 'Producto no disponible' %></h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>$<%= item.producto ? item.producto.Precio : '0.00' %></td>
+                                        <td><%= item.quantity %></td>
+                                        <td>$<%= item.producto ? (item.producto.Precio * item.quantity).toFixed(2) : '0.00' %></td>
+                                    </tr>
+                                <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Columna derecha con el resumen del pedido -->
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Total del Pedido</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Subtotal:</span>
+                            <span>$<%= total.toFixed(2) %></span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong>Total:</strong>
+                            <strong>$<%= total.toFixed(2) %></strong>
+                        </div>
+                        <!-- Botón para confirmar el pedido -->
+                        <button id="procesarPedidoBtn" class="btn btn-success w-100">Confirmar Pedido</button>
+                        <br><br>
+                        <!-- Botón para seguir comprando -->
+                        <button type="button" class="btn btn-secondary w-100" onclick="window.location.href='/Cliente/Comprar'">Seguir Comprando</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } else { %>
+        <!-- Mensaje que se muestra cuando el carrito está vacío -->
+        <div class="alert alert-info text-center">
+            <p>Tu carrito está vacío</p>
+            <a href="/Cliente/Comprar" class="btn btn-primary">Ir a Comprar</a>
+        </div>
+    <% } %>
+</div>
+
+<script>
+    // Esperamos a que el DOM esté completamente cargado
+    document.addEventListener("DOMContentLoaded", function() {
+        const procesarPedidoBtn = document.getElementById('procesarPedidoBtn');
+
+        if (procesarPedidoBtn) {
+            // Agregamos un event listener para el click en el botón de confirmar pedido
+            procesarPedidoBtn.addEventListener('click', function() {
+                // Mostramos un spinner de carga y deshabilitamos el botón
+                procesarPedidoBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...';
+                procesarPedidoBtn.disabled = true;
+
+                // Hacemos una petición POST al servidor para procesar el pedido
+                fetch('/Cliente/ProcesarPedido', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Si el pedido se procesó correctamente, redirigimos a la página de confirmación
+                            window.location.href = `/Cliente/ConfirmacionPedido/${data.pedidoId}`;
+                        } else {
+                            // Mostramos un mensaje de error si algo falló
+                            alert('Error al procesar el pedido: ' + data.message);
+                            // Restauramos el botón a su estado original
+                            procesarPedidoBtn.innerHTML = 'Confirmar Pedido';
+                            procesarPedidoBtn.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Ocurrió un error al procesar el pedido');
+                        // Restauramos el botón a su estado original
+                        procesarPedidoBtn.innerHTML = 'Confirmar Pedido';
+                        procesarPedidoBtn.disabled = false;
+                    });
+            });
+        }
+    });
+</script>
+
+<%- include('../Cliente/footer') %>

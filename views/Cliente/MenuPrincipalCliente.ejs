@@ -1,0 +1,39 @@
+<%- include('../Cliente/header') %> <!-- Incluimos el encabezado del cliente -->
+
+<!-- Contenedor principal centrado, con estilos -->
+<div class="d-flex flex-column gap-3 container align-items-center text-center border border-5 border-dark my-5" style="min-height: 100vh; justify-content: center;">
+    <!-- Título principal del panel -->
+    <h1 class="fw-bold">Panel de Cliente</h1>
+
+    <!-- Mensaje de bienvenida -->
+    <p class="text-muted mb-4 w-75">
+        Bienvenido al centro de gestión de tu tienda. Desde aquí puedes acceder al listado de clientes, gestionar productos y mantener tu inventario al día.
+    </p>
+
+    <!-- Enlace para ver los datos de tu cuenta -->
+    <a href="/Cliente/TuCuenta" class="btn btn-light mx-auto w-50">
+        Ver tu cuenta
+    </a>
+
+    <!-- Enlace para actualizar los datos de tu cuenta -->
+    <a href="/Cliente/ActualizarTuCuenta" class="btn btn-success mx-auto w-50">
+        Actualizamos tu cuenta
+    </a>
+
+    <!-- Enlace para eliminar la cuenta -->
+    <a href="/Cliente/EliminarCuenta" class="btn btn-danger mx-auto w-50">
+        Eliminamos tu cuenta
+    </a>
+
+    <!-- Enlace para acceder a la sección de compras -->
+    <a href="/Cliente/Comprar" class="btn btn-primary mx-auto w-50">
+        Vamos a comprar
+    </a>
+
+    <!-- Enlace al historial de compras del cliente -->
+    <a href="/Cliente/HistorialDeCompras" class="btn btn-warning mx-auto w-50">
+        Vemos tu historial de compras
+    </a>
+</div>
+
+<%- include('../Cliente/footer') %> <!-- Incluimos el pie de página del cliente -->

@@ -1,0 +1,23 @@
+<%- include('../Cliente/header') %>
+
+<!-- Contenedor principal para la página de eliminación de cuenta -->
+<div class="d-flex flex-column gap-3 container align-items-center text-center border border-5 border-dark my-5 " style="min-height: 100vh; justify-content: center;">
+
+    <!-- Mensaje de confirmación -->
+    <h2 class="text-center">¿Estás seguro de que deseas eliminar tu cuenta?</h2>
+
+    <!-- Advertencia sobre la irreversibilidad de la acción -->
+    <p class="text-center text-danger">Esta acción no se puede deshacer.</p>
+
+    <!-- Formulario para confirmar la eliminación -->
+    <form action="/Cliente/EliminarCuenta" method="POST" class="d-flex align-items-center justify-content-center gap-3 mt-4">
+        <!-- Botón para cancelar y volver al menú principal -->
+        <a href="/Cliente/MenuPrincipalCliente" class="btn btn-secondary">No, volver al menú</a>
+
+        <!-- Botón para confirmar la eliminación de la cuenta -->
+        <button type="submit" class="btn btn-danger">Sí, eliminar cuenta</button>
+    </form>
+
+</div>
+
+<%- include('../Cliente/footer') %>
