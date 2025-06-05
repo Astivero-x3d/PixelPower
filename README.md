@@ -17,7 +17,6 @@ Permite a los clientes registrarse, iniciar sesión, añadir productos al carrit
 - **Express-session** – Gestión de sesiones de usuario
 
 ### 🎨 Frontend
-- **HTML5** – Estructura de las vistas
 - **CSS3** – Estilos personalizados
 - **Bootstrap 5** – Diseño responsive y componentes
 - **JavaScript** – Lógica del cliente
